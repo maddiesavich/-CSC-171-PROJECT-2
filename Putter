@@ -1,0 +1,29 @@
+// Madalyne Savich and Ana Acuna, msavich2, Project 2, Tuesday/Thursday 11:05-12:20
+
+// The purpose of this classs is create objects (putters).
+import java.util.Random;
+
+public class Putter {
+	// Initialize
+	int power, mean, stddev;
+
+	// Constructor
+	public Putter(int power, int mean, int stddev) {
+		this.power = power;
+		this.mean = mean;
+		this.stddev = stddev;
+	}
+
+	// Getters and setters
+	public int getPower() {
+		return power;
+	}
+
+	public int getMean() {
+		return mean;
+	}
+
+	public int getStddev() {
+		return stddev;
+	}
+}
