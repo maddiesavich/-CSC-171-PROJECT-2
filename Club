@@ -1,0 +1,31 @@
+// Madalyne Savich and Ana Acuna, msavich2, Project 2, Tuesday/Thursday 11:05-12:20
+
+// The purpose of this class is to be able to create objects (clubs)
+import java.util.Random;
+
+public class Club {
+
+	// Initialize
+	String clubType;
+	int mean, stddev;
+
+	// Constructor
+	public Club(String clubType, int mean, int stddev) {
+		this.clubType = clubType;
+		this.mean = mean;
+		this.stddev = stddev;
+	}
+
+	// Getters
+	public String getClubType() {
+		return clubType;
+	}
+
+	public int getMean() {
+		return mean;
+	}
+
+	public int getStddev() {
+		return stddev;
+	}
+}
