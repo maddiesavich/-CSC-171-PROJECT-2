@@ -1,0 +1,17 @@
+// Madalyne Savich and Ana Acuna, msavich2, Project 2, Tuesday/Thursday 11:05-12:20
+
+// The purpose of this class is to be able create objects with par.
+public class Course extends Golf{
+	// Initialize
+	int holes;
+	int par;
+	
+	// Constructor
+	public Course(int par) {
+		this.par = par;
+	}
+	// Getters
+	public int getPar() {
+		return par;
+	}
+}
