@@ -1,0 +1,170 @@
+// Madalyne Savich and Ana Acuna, msavich2, Project 2, Tuesday/Thursday 11:05-12:20
+
+// This class runs the program that controls the game. It contains looping and iteration with nesting.
+// Arrays are also created to represent objects such as the clubs and putters.
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class Golf {
+
+	public static void main(String[] args) {
+
+		System.out.println("GOLF");
+
+		// Initialize
+		int hole = 1;
+		int[] courses;
+		int val = 0;
+		int total = 0;
+		Club[] club = new Club[10];
+		Putter[] putter = new Putter[10];
+		Course[] parsGVP = new Course[10];
+		Course[] parsAndrews = new Course[10];
+		boolean quit = false;
+		int[] par;
+		int score = 0;
+		int hits = 0;
+
+		// Create instances of each club
+		String[] clubTypes = { "Driver", "3-wood", "3-iron", "4-iron", "5-iron", "6-iron", "7-iron", "8-iron", "9-iron",
+				"Wedge" };
+		int[] means = { 230, 215, 180, 170, 155, 145, 135, 125, 110, 50 };
+		int[] stddevs = { 30, 20, 20, 17, 15, 15, 15, 15, 10, 10 };
+
+		// Create instances of each putter at each power
+		int[] powerPutter = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+		int[] meansPut = { 40, 30, 25, 20, 16, 12, 8, 4, 2, 1 };
+		int[] stddevsPut = { 5, 5, 4, 4, 3, 3, 2, 2, 1, 1 };
+
+		// Arrays for par
+		int[] parGVP = { 5, 4, 4, 3, 5, 3, 4, 4, 3, 4, 4, 3, 5, 4, 5, 4, 4, 3 };
+		int[] parAndrews = { 4, 4, 4, 4, 5, 4, 4, 3, 4, 4, 3, 4, 4, 5, 4, 4, 4, 4 };
+
+		// For loop to create instances of clubs
+		for (int i = 0; i <= 9; i++) {
+			club[i] = new Club(clubTypes[i], means[i], stddevs[i]);
+			putter[i] = new Putter(powerPutter[i], meansPut[i], stddevsPut[i]);
+			parsGVP[i] = new Course(parGVP[i]);
+			parsAndrews[i] = new Course(parAndrews[i]);
+		}
+
+		// Create arrays for each course
+		int[] gvp = { 530, 305, 331, 201, 500, 226, 409, 410, 229, 433, 363, 174, 545, 419, 512, 410, 320, 170 };
+		int[] andrews = { 376, 453, 397, 480, 568, 412, 371, 175, 352, 386, 174, 348, 465, 618, 455, 423, 495, 357 };
+
+		// Import the Scanner
+		Scanner in = new Scanner(System.in);
+
+		// Prompt the user to enter a value for which course they would like to
+		// play on
+		System.out.println(
+				"Which course would you like to golf on? Enter 1 for Genesee Valley Park North Course or 2 for the Old Course at St. Andrew's: ");
+		int course = in.nextInt();
+
+		// Create course Genesee Valley Park and set each index equal to the
+		// distance from each hole
+		if (course == 1) {
+			System.out.println("You have chosen Genesee Valley Park North Course!");
+			courses = gvp;
+			par = parGVP;
+			val = courses[0];
+
+			// Create course St. Andrew's and set each index equal to the
+			// distance from each hole
+		} else {
+			System.out.println("Old Course at St. Andrew's!");
+			courses = andrews;
+			par = parAndrews;
+			val = courses[0];
+
+		}
+
+		// While to allow the user to quit
+		while (!quit) {
+			// For loop to run each hole
+			for (int i = 1; i <= 18; i++) {
+				System.out.println("Welcome to hole " + i + "! The distance to the hole is " + courses[i - 1]
+						+ " yards away. Par is " + par[i - 1] + ".");
+				int distanceFromHole = courses[i - 1];
+				while (distanceFromHole >= 0) {
+					// User input for club
+					System.out.println("Choose a club: ");
+					int clubNumber = in.nextInt();
+					System.out.println("You have chosen: " + club[clubNumber - 1].getClubType());
+
+					// User input for power
+					System.out.println("Enter power [1-10]: ");
+					int power = in.nextInt();
+					// If loop to count the number of hits
+					if (power >= 1) {
+						hits++;
+					}
+
+					// calculate the distance the ball travels
+					int val1 = (nextDistance(club[i - 1].getMean(), club[i - 1].getStddev(), power));
+					distanceFromHole -= val1;
+					System.out.println("You hit the ball " + val1 + " yards!");
+					System.out.println("You are " + distanceFromHole + " yards from the hole.");
+
+					// If statement for the green
+					if (distanceFromHole <= 20 && distanceFromHole > 0) {
+						System.out.println("You are in the green!");
+						System.out.println("Enter power [1-10]: ");
+						int powerPut = in.nextInt();
+						// If loop to count the number of hits
+						if (power >= 1) {
+							hits++;
+						}
+						int valPutter = (nextDistance(putter[i - 1].getMean(), putter[i - 1].getStddev(), powerPut));
+						System.out.println("You hit the ball " + valPutter * 3 + " feet!");
+						distanceFromHole -= valPutter;
+						// System.out.println("You are " + distanceFromHole + "
+						// feet from the hole.");
+						score = hits - par[i];
+						System.out.println("Your score is: " + score);
+						// EXTRA CREDIT
+						if ((hits - par[i]) == -1) {
+							System.out.println("BIRDIE!");
+						}
+						if ((hits - par[i]) == 1) {
+							System.out.println("BOGEY!");
+						}
+					}
+					if (distanceFromHole <= 0) {
+						System.out.println("You have made it into the hole!");
+						score = hits - par[i];
+						System.out.println("You have completed the first course! Your current score is : " + score);
+					}
+				}
+				// Allow the user to quit the game
+				System.out.println("Enter 'quit' if you would like to end the current game. Enter 'no' if not.");
+				if (in.next().equalsIgnoreCase("quit")) {
+					System.out.println("Your final score is: " + score);
+					System.exit(0);
+				}
+				total = courses[i - 1];
+			}
+		}
+	}
+
+	// Random for the method
+	static Random random = new Random();
+
+	// Method for nextDistance
+	public static int nextDistance(int mean, int stddev, int power) {
+		int meanADJ = (int) (mean * power / 10.0);
+		int stddevADJ = (int) (stddev * power / 10.0);
+		int val = (int) Math.abs(random.nextGaussian() * stddevADJ + meanADJ);
+		return val;
+	}
+
+	// Method for nextDistance
+	public static int nextDistancePutter(int mean, int stddev, int power) {
+		int meanADJ = (int) (mean * power / 10.0);
+		int stddevADJ = (int) (stddev * power / 10.0);
+		int put = (int) Math.abs(random.nextGaussian() * stddevADJ + meanADJ);
+		return put;
+	}
+
+}
